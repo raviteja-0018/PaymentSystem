@@ -38,7 +38,7 @@ public class BatchConfig {
 	{
 		JdbcCursorItemReader<AccountTransaction> cursorItemReader = new JdbcCursorItemReader<>();
 		cursorItemReader.setDataSource((javax.sql.DataSource) dataSource);
-		cursorItemReader.setSql("Select person_id, first_name, last_name, email, age, From person");
+		cursorItemReader.setSql("Select sequence_id, amount, debit");
 		cursorItemReader.setRowMapper(new AccountRowMapper());
 		return cursorItemReader;
 	}
@@ -77,6 +77,7 @@ public class BatchConfig {
 	@Bean
 	public Job exportAccountJob()
 	{
-		return jobBuilderfactory.get("exportAccountJob").incrementer(new RunIdIncrementer()).flow(step1()).end().build();
+		return jobBuilderfactory.get("exportAccountJob").incrementer(new RunIdIncrementer()).flow((org.springframework.batch.core.Step) step1()).end().build();
 	}
+	
 }
